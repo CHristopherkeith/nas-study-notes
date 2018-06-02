@@ -1,6 +1,10 @@
 <!doctype>
 <html>
 
+<!-- private key:9f75e80efcb1f10b6a1a1b12f806733565759fd5e0f554398cc5d8b91e49f8f7
+public key:a3d6fd0dba38bd2fb28825d95e123fb11a31e61967e6dad4b3a4c4cad63e3473c05580c1a9c544f6883edd187f1ed8224d872d8c08842182994f2102aed8f352
+address:n1HtpFygd1CrZmTDCF9UdRZ2dJAtdKr5sfW
+state: balance:0 nonce:0 -->
 <head>
     <script type="text/javascript" src="./nebulas.js"></script>
     <script type="text/javascript">
@@ -19,6 +23,7 @@
             document.getElementById('address').innerText = account.getAddressString();
           neb.api.getAccountState(account.getAddressString()).then(function (state) {
               state = state.result || state;
+              console.log(state, 'state')
                document.getElementById('balance').innerText = state.balance;
               document.getElementById('nonce').innerText = state.nonce;
             }).catch(function (err) {
@@ -37,6 +42,7 @@
             setTimeout(function () {
                 neb.api.getAccountState(account.getAddressString()).then(function (state) {
                     state = state.result || state;
+                    console.log(state, 'state')
                     document.getElementById('balance').innerText = state.balance;
                     document.getElementById('nonce').innerText = state.nonce;
                 }).catch(function (err) {
@@ -83,7 +89,8 @@
             })
         }
         function receiptTransaction() {
-            neb.api.getTransactionReceipt(txhash, function (err, resp) {
+            neb.api.getTransactionReceipt(txhash).then(function (resp) {
+                // console.log(err)
                 console.log(resp);
                 document.getElementById('receipt').value = JSON.stringify(resp);
             });
