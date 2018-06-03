@@ -27,6 +27,17 @@ curl -i -H 'Content-Type:application/json' -X POST https://mainnet.nebulas.io/v1
 
 curl -i -H 'Content-Type: application/json' -X POST https://localhost:8685/v1/admin/account/lock -d '{"address":"n1czGUvbQQton6KUWga4wKDLLKYDEn39mEk"}'
 
+## 部署合约（为自己保留的数据，可忽略） 
+1.  
+account_address: n1JLrc9qXkGY7WS5UiZoXPvPbz177Wew5ta  
+hash: c90bf592893f6c83387d97741d63953e7d76c1d3409e5e8d6f0d750bbc57f2f0  
+contract_address: n1nUb233k4s1UvhSi7sSERoWSJjthHSa3s4  
+
+2.
+account_address: n1JLrc9qXkGY7WS5UiZoXPvPbz177Wew5ta  
+hash: 63e743a17bec7b25ef3240789069336501a23bd2934bbc9b33e2c15133fe3d79  
+contract_address: n1z5ypS2kijyrcwy8pUCAGQghE9VZbZ5gBg 
+
 # 该项目前端框架使用vue，启动命令如下
 
 > A Vue.js project

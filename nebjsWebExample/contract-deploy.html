@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>合约部署</title>
+</head>
+<body>
+<p>账户地址</p><input id="accountAddress" type="text" value="n1JLrc9qXkGY7WS5UiZoXPvPbz177Wew5ta" />
+<br/>
+<br/>
+<button onclick="checkAccount()">查看账户状态</button>
+<br/>
+<br/>
+<textarea id="checkAccount" style="width: 500px;height: 125px;"></textarea>
+<p>密钥文件</p><textarea id="keyStore" style="width: 300px;height: 100;"></textarea>
+<p>账户密码</p><input id="password" type="password"/>
+<p>合约代码</p><textarea id="contract" style="width: 500px;height: 125px;"></textarea>
+<br/>
+<button onclick="deploy()">部署合约</button>
+<button onclick="checkDeploy()">查看部署状态</button>
+<br/>
+<textarea id="checkDeploy" style="width: 500px;height: 125px;"></textarea>
+</body>
+<script type="text/javascript" src="./nebulas.js"></script>
+<script type="text/javascript">
+
+	var Nebulas = require("nebulas");
+	var HttpRequest = require("nebulas").HttpRequest;
+	var Neb = require("nebulas").Neb;
+	var Account = require("nebulas").Account;
+	var Transaction = require("nebulas").Transaction;
+	var Unit = require("nebulas").Unit;
+	var neb = new Neb();
+	neb.setRequest(new HttpRequest("https://testnet.nebulas.io"));
+	var account, tx, txhash, password, key, contract, contractData, accountAddress;
+	var Account = Nebulas.Account;
+	var account = new Account();
+ 	function checkAccount(){
+ 		accountAddress = document.getElementById("accountAddress").value;
+ 		neb.api.getAccountState(accountAddress).then(function (state) {
+            state = state.result || state;
+            console.log(state, 'state')
+            document.getElementById('checkAccount').value = JSON.stringify(state);
+        }).catch(function (err) {
+            console.log(err);
+        })
+ 	}
+	function deploy(){
+		password = document.getElementById("password").value;
+		console.log(password, 'password');
+		key = document.getElementById("keyStore").value;
+		console.log(key, 'key');
+		account = account.fromKey(key, password, true);
+		console.log(account, 'account');
+		contract = document.getElementById("contract").value;
+		
+		contractData = {
+			source: contract,
+			sourceType: 'js',
+			args: '[\"最喜欢傻狗狗\", \"Favorite foolish dog ^-^ \"]'
+			// args: ''
+		}
+		console.log(contractData, 'contractData');
+		neb.api.getAccountState(account.getAddressString()).then(function (state) {
+            state = state.result || state;
+            console.log(state, 'state')
+            // return false;
+            var testnetchainID = 1001;
+            tx = new Transaction(testnetchainID, account, account, 0, parseInt(state.nonce) + 1, 0, 2000000, contractData);
+            tx.signTransaction();
+            console.log(tx.toProtoString(), 'tx.toProtoString()')
+            neb.api.sendRawTransaction(tx.toProtoString()).then(function (resp) {
+                resp = resp.result || resp;
+                console.log(resp, 'resp')
+                txhash = resp.txhash;
+                console.log(txhash, 'txhash')
+                // document.getElementById('receipt').value = txhash;
+            }).catch(function (err) {
+                console.log(err);
+            })
+        }).catch(function (err) {
+            console.log(err);
+        })
+	}
+	function checkDeploy(){
+		neb.api.getTransactionReceipt(txhash).then(function (resp) {
+		// neb.api.getTransactionReceipt('cd49d8c7ba2d531662c2aa0baf60512fa6c0fc40e621e9c1b175362552e27732').then(function (resp) {
+            // console.log(err)
+            console.log(resp, 'resp');
+            document.getElementById('checkDeploy').value = JSON.stringify(resp);
+        });
+	}
+</script>
+</html>

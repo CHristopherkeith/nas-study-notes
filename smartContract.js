@@ -1,5 +1,7 @@
 'use strict';
 
+console.log("最喜欢傻狗狗, Favorite foolish dog ╰(￣ω￣ｏ)")
+
 var DepositeContent = function (text) {
   if (text) {
     var o = JSON.parse(text);
