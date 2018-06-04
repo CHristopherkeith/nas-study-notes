@@ -37,6 +37,11 @@ contract_address: n1nUb233k4s1UvhSi7sSERoWSJjthHSa3s4
 account_address: n1JLrc9qXkGY7WS5UiZoXPvPbz177Wew5ta  
 hash: 63e743a17bec7b25ef3240789069336501a23bd2934bbc9b33e2c15133fe3d79  
 contract_address: n1z5ypS2kijyrcwy8pUCAGQghE9VZbZ5gBg 
+ 
+3.  
+account_address: n1JLrc9qXkGY7WS5UiZoXPvPbz177Wew5ta  
+hash: 5340175c0c978e8f659908ab7561f185e352f2c1336c5812616ee3200606005a  
+contract_address: n21Rvxijhp9u8ubkWYotFPDnWLfGnpWgXSy 
 
 # 该项目前端框架使用vue，启动命令如下
 
