@@ -25,10 +25,25 @@
 <button onclick="save()">存钱 </button><input id="save" type="text"/>
 <br/>
 <button onclick="take()">取钱 </button><input id="take" type="text"/>
+<br/>
+<button onclick="saveWithWallet()">存钱（使用钱包） </button><input id="saveWithWallet" type="text"/>
+<br/>
+<button onclick="takeWithWallet()">取钱（使用钱包） </button><input id="takeWithWallet" type="text"/>
+<br/>
+<button onclick="balanceOf()">查询合约余额</button><input id="balanceOf" type="text"/>
 </body>
 <script type="text/javascript" src="./nebulas.js"></script>
+<script type="text/javascript" src="./nebPay.js"></script>
 <script type="text/javascript">
-
+	var NebPay = require("nebpay");
+	// NebPay.config.testnetUrl = "https://testnet.nebulas.io"
+	NebPay.config = {
+		testnetUrl: "https://testnet.nebulas.io"
+	}
+	console.log(NebPay.config.testnetUrl)
+    var nebPay = new NebPay();
+    console.log(nebPay, 'nebPay')
+    // ///////////////////////////
 	var Nebulas = require("nebulas");
 	var HttpRequest = require("nebulas").HttpRequest;
 	var Neb = require("nebulas").Neb;
@@ -36,10 +51,16 @@
 	var Transaction = require("nebulas").Transaction;
 	var Unit = require("nebulas").Unit;
 	var neb = new Neb();
+	var api = neb.api;
 	neb.setRequest(new HttpRequest("https://testnet.nebulas.io"));
 	var account, tx, txhash, password, key, contract, contractData, accountAddress, contractAddress, money
 	var Account = Nebulas.Account;
 	var account = new Account();
+	if(typeof(webExtensionWallet) === "undefined"){
+        alert ("Extension wallet is not installed, please install it first.")
+    }else{
+    	console.log("Extension wallet is installed")
+    }
  	function checkAccount(){
  		accountAddress = document.getElementById("accountAddress").value;
  		neb.api.getAccountState(accountAddress).then(function (state) {
@@ -105,7 +126,7 @@
 		contractAddress = document.getElementById("contractAddress").value;
 		console.log(contractAddress, 'contractAddress')
 		money = document.getElementById("save").value;
-		console.log(money, 'money')
+		console.log(money, 'money');
 		neb.api.getAccountState(account.getAddressString()).then(function (state) {
             state = state.result || state;
             console.log(state, 'state')
@@ -130,8 +151,6 @@
         }).catch(function (err) {
             console.log(err);
         })
-
-
 	}
 	var take = function(){
 		password = document.getElementById("password").value;
@@ -169,6 +188,105 @@
         }).catch(function (err) {
             console.log(err);
         })
+	}
+
+	// 使用钱包
+	function saveWithWallet(){
+		contractAddress = document.getElementById("contractAddress").value;
+		console.log(contractAddress, 'contractAddress')
+		money = document.getElementById("saveWithWallet").value;
+		console.log(money, 'money')
+  		nebPay.call(contractAddress, money, "save", "[0]", {
+            qrcode: {
+                showQRCode: true
+            },
+            goods: {
+                name: "test",
+                desc: "test goods"
+            },
+            callback: NebPay.config.testnetUrl,
+            // callback: "https://testnet.nebulas.io",
+            listener: function(resp){
+            	resp = resp.result || resp;
+            	console.log(resp, 'resp')
+                txhash = resp.txhash;
+                console.log(txhash, 'txhash')
+            }
+        });
+
+	}
+
+	function takeWithWallet(){
+		contractAddress = document.getElementById("contractAddress").value;
+		console.log(contractAddress, 'contractAddress')
+		money = document.getElementById("takeWithWallet").value;
+		money = money*Math.pow(10,18);
+		console.log(money, 'money')
+  		nebPay.call(contractAddress, 0, "takeout", "["+money+"]", {
+            qrcode: {
+                showQRCode: true
+            },
+            goods: {
+                name: "test",
+                desc: "test goods"
+            },
+            callback: NebPay.config.testnetUrl,
+            // callback: "https://testnet.nebulas.io",
+            listener: function(resp){
+            	resp = resp.result || resp;
+            	console.log(resp, 'resp')
+                txhash = resp.txhash;
+                console.log(txhash, 'txhash')
+            }
+        });
+
+	}
+	// 查询合约余额
+	function balanceOf(){
+		password = document.getElementById("password").value;
+		console.log(password, 'password');
+		key = document.getElementById("keyStore").value;
+		console.log(key, 'key');
+		account = account.fromKey(key, password, true);
+		console.log(account, 'account');
+		contractAddress = document.getElementById("contractAddress").value;
+		console.log(contractAddress, 'contractAddress')
+		money = document.getElementById("save").value;
+		console.log(money, 'money');
+		/////////////////////////
+		neb.api.getAccountState(account.getAddressString()).then(function (state) {
+            state = state.result || state;
+            console.log(state, 'state')
+            // return false;
+            var testnetchainID = 1001;
+            /////////////////////////////
+            api.call({
+			   chainID: testnetchainID,
+			   from: account.getAddressString(),
+			   to: contractAddress,
+			   value: 0,
+			   nonce: parseInt(state.nonce) + 1,
+			   gasPrice: 1000000,
+			   gasLimit: 2000000,
+			   contract: {
+			       function: "balanceOf",
+			       // args: "['傻狗傻鳄傻蛋']"
+			       args: "[0]"
+			   }
+			}).then(function(state) {
+			    //code
+			    result = JSON.parse(state.result || state);
+			    // console.log(result, 'result')
+			    // console.log(result.balance, 'result.balance')
+			    // console.log(result.balance/1000000000000000000)
+			    // console.log((result.balance)/1000000000000000000)
+			    document.getElementById("balanceOf").value = result.balance/1000000000000000000;
+			});
+        }).catch(function (err) {
+            console.log(err);
+        })
+
+		
 	}
 
 </script>
