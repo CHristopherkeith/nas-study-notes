@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<!-- saved from url=(0027)http://ethershrimpfarm.net/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="file/shrimp.png">
+
+    <title>星云养鸡场</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./file/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="./file/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="./file/jumbotron-narrow.css" rel="stylesheet">
+    <link href="./file/custom.css" rel="stylesheet">
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script type="text/javascript" src="js/nebulas.min.js"></script>
+    <script src="./file/ie-emulation-modes-warning.js"></script>
+    <script src="./file/interface.js"></script>
+
+    <script type="text/javascript" src="js/hui.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <link type="text/css" rel="stylesheet" href="chrome-extension://pioclpoplcdbaefihamjohnefbikjilc/content.css"></head>
+
+  <body>
+
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <!--<span class="close">&times;</span>-->
+        <div id="modal-internal"></div>
+      </div>
+
+    </div>
+
+    <div class="container">
+      <div class="header clearfix">
+        
+        <h3 class="text-muted">星云养鸡场</h3>  <h4 class="text-muted">开个虚拟鸡场赚钱吧</h4> 
+        <span>一只鸡每天下1个蛋（价值0.1Nas，折合人民币7块钱，快去孵鸡蛋扩大你的养鸡场吧！）</span>
+
+        <div >
+        <h4 class="text-muted">破产公告</h4> 
+        <span>由于鸡场被黑客攻击，该黑客领走了大量母鸡，导致收支完全失衡，故鸡场将于今晚(520情人节当晚)申请破产保护，无法进行用户之间鸡蛋卖出操作。养鸡场里还有鸡蛋的用户，凌晨12点前将鸡蛋卖出。</span>
+        <p><b>作为第一个星云链破产应用，是我们的经济策略失职。鸡场虽破产，但是将永续存在于区块链上。</b>希望能构建出一个能自平衡的经济博弈系统，让应用可以自维护去中心化的运行下去。</p>
+          <p><b>接下来会引入星云的排名机制</b>，综合考虑钱包质量，来防止刷票，提高用户质量，可以联系我交流hujun123@gmail.com</p>
+          </div>
+      </div>
+
+      <div>
+        钱包地址：<p id="wallet_address"></p>
+        <div hidden id="wallet_url">
+          <a target="_window"  href="https://github.com/ChengOrangeJu/WebExtensionWallet">星云钱包安装</a>
+        </div>
+        
+      </div>
+      <div>
+        余额：<p id="wallet_balance">0</p>
+      </div>
+
+      <div class="jumbotron">
+            
+            <p class="lead"></p>
+            
+            
+          <div class="container altcolor">
+              <div class="row">
+                <div class="col-md-4">
+                    <img src="./file/shrimp.png" width="150" height="150" alt="Shrimp">
+                    
+                    </div>
+                <div class="col-md-6">
+                    <h2>养鸡场里有<span id="numchicken">0</span> 只鸡</h2>
+                    <br>
+                    <h2>每小时可以生 <span id="defaulproduction">0.04</span> 个蛋</h2>
+                    <h2>养鸡场总产量为：每小时 <span id="production">0</span> 个蛋</h2>
+                </div>
+              </div>
+              <div class="row">
+                <p><a id="getfreechicken" class="btn btn-lg btn-success invis" role="button" style="display: inline-block;">免费领养母鸡!</a></p>
+              </div>
+              <div class="row">
+                <p><a id="refresh" class="btn btn-lg btn-success invis" role="button" style="display: inline-block;">拉取数据</a></p>
+                <span>当前数据可能不准确，点击更新区块并查询最新数据</span>
+              </div>
+          </div>
+          <div class="container altcolor">
+              <div class="row">
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-8">
+                    <h2>养鸡场里有<span id="numeggs">0.00</span> 个蛋
+                    <br>
+                    <span id="hatchnum">0</span> 个蛋正在孵化
+                    <span id="hatchp">孵化了<span id="hatchnumtime"></span>小时</span>
+                    </h2>
+                    </div>
+              </div>
+              <br><br>
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="./file/shrimpegg.png" width="50" height="50" alt="Egg">
+                    </div>
+                    
+                    <div class="col-md-4" ><p><a id="hatchbtn" class="btn btn-lg btn-success"  role="button">孵鸡蛋</a></p></div>
+                    <div id="hatchnumdiv" hidden>
+                      <input class="form-control" type="number" style="width: 130px"  step="1" value="1" id="hatchnumber">
+                      <button id="hatchsurebtn">确定</button>
+                    </div>
+              	</div>
+              	<div class="row">
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-8">
+                        <p><span id="sellsforexample">每个鸡蛋一天孵一只鸡</span></p>
+                    </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-md-4"></div>
+                  <div class="col-md-4" >
+                    <p><a id="sellBtn" class="btn btn-lg btn-info" role="button">卖鸡蛋</a></p>
+                  </div>
+                  <div id="sellnumdiv" hidden>
+                    <input class="form-control" type="number" style="width: 130px"  step="1" value="1" id="sellnumber">
+                    <button id="sellsurebtn">确定</button>
+                  </div>
+              </div>
+                <div class="row">
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-8">
+                        <p><span id="sellsforexample">每个鸡蛋0.1Nas</span></p>
+                    </div>
+              </div>
+          </div>
+          <div class="container altcolor">
+              <div class="row">
+                <div class="col-md-4">
+                    <img src="./file/ether.png" width="100" height="100" padding="50" alt="Shrimp">
+                    
+                    </div>
+                <div class="col-md-7">
+                    <a class="btn btn-lg btn-info"  id="buyBtn" role="button">买鸡蛋</a>
+                    <p><span id="sellsforexample">每个鸡蛋0.1Nas</span></p>
+                    <div id="buynumdiv" hidden>
+                      <input class="form-control" type="number" style="width: 130px"  step="1" value="1" id="buynumber">
+                      <button id="buysurebtn">确定</button>
+                    </div>
+                       </div>
+
+              </div>
+              <div class="row">
+                <div class="col-md-4"></div>
+                  <div class="col-md-4">
+                    
+                </div>
+              </div>
+          </div>
+      
+        
+      </div>
+
+
+     
+      <div class="row marketing">
+        <div class="col-lg-6">
+          <h4>可以赚钱的星云养鸡场!</h4>
+          <p>基于星云链的虚拟养鸡场，在这里可以免费获得一只星云鸡，每只鸡每天能下一个蛋。如果你觉得生鸡蛋速度太慢，你也可以去其他人的鸡场买鸡蛋。鸡蛋可以
+          	孵出鸡来继续生蛋(每孵一只鸡需要消耗0.99Nas)，也可以卖了赚钱哦。没有手续费。（Nas目前值60块钱人民币，当然你也可以卖了换美金、日元随你需要）。
+
+          </p>
+
+
+          <h4>底层公链星云链提供支持</h4>
+          <p>开虚拟养鸡场需要安装 <a target="_window"  href="https://github.com/ChengOrangeJu/WebExtensionWallet">星云钱包</a></p>
+          <p>查看全球所有养鸡场钱包总余额： <a target="_window" href="https://explorer.nebulas.io/#/address/n1r28W9Di8y7NN8ka4ES8Tkw6YCVeDoqtSJ">余额Nas</a></p>
+        </div>
+
+        <div class="col-lg-6">
+            <h4>区块链技术</h4>
+          <p>利用区块链技术，所有数据记录在不可篡改的区块链上而不是公司的服务器上，所以任何人都不能拿走你的财产，包括开发者。并且区块链是全球化的，你的鸡蛋可以卖给全世界所有玩家，利用虚拟货币nas可以兑换多种币种，包括人民币、美金、日元、欧元、韩元等。</p>
+          
+            
+          
+        <input style="display:none;" type="text" value="Hello Worldfdgerh" id="copytextthing">
+        </a></div><a onclick="copyRef()" id="playerreflink">
+        
+      </a></div><a onclick="copyRef()" id="playerreflink">
+
+      <footer class="footer">
+      </footer>
+
+    </a></div><a onclick="copyRef()" id="playerreflink"> <!-- /container -->
+
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./file/ie10-viewport-bug-workaround.js"></script>
+    <script src="js/main.js"></script>
+
+  
+
+</a></body></html>
