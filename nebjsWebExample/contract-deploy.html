@@ -206,6 +206,9 @@
             },
             callback: NebPay.config.testnetUrl,
             // callback: "https://testnet.nebulas.io",
+            // extension: {
+            //     openExtension: false //是否支持插件调用
+            // },
             listener: function(resp){
             	resp = resp.result || resp;
             	console.log(resp, 'resp')

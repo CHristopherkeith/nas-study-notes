@@ -43,6 +43,10 @@ account_address: n1JLrc9qXkGY7WS5UiZoXPvPbz177Wew5ta
 hash: 5340175c0c978e8f659908ab7561f185e352f2c1336c5812616ee3200606005a  
 contract_address: n21Rvxijhp9u8ubkWYotFPDnWLfGnpWgXSy 
 
+4.chainId
+主网chainId为1
+测试网chainId为1001
+
 ## neb.js：对应主网的完整javascript  api
 
 ## nebPay: 对应主网的支付javascript  api
